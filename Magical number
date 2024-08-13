@@ -1,0 +1,61 @@
+Question 8. You are given a program to find count of magical numbers from 1 to N. A magical Number is defined by Following Criteria
+1.
+Replace 0 with 1 and 1 with 2 in binary string
+2.
+Calculate the sum of digits of modified binary string, if sum is odd it means its magical number.
+Input 1: 5
+Output 1: 2
+Explanation:
+1->1->2->even
+2->10->21->odd
+3->11->22->even
+
+#include <iostream>
+#include <bitset>
+using namespace std;
+
+// Function to check if a number is magical
+bool isMagical(int number) {
+    // Convert number to binary string
+    string binaryString = bitset<32>(number).to_string();
+    
+    // Remove leading zeros
+    size_t pos = binaryString.find('1');
+    if (pos != string::npos) {
+        binaryString = binaryString.substr(pos);
+    }
+    
+    // Replace 0 with 1 and 1 with 2
+    int sumOfDigits = 0;
+    for (char c : binaryString) {
+        if (c == '0') {
+            sumOfDigits += 1;
+        } else {
+            sumOfDigits += 2;
+        }
+    }
+    
+    // Check if sum is odd
+    return (sumOfDigits % 2 != 0);
+}
+
+int countMagicalNumbers(int N) {
+    int count = 0;
+    for (int i = 1; i <= N; ++i) {
+        if (isMagical(i)) {
+            ++count;
+        }
+    }
+    return count;
+}
+
+int main() {
+    int N;
+    cout << "Enter the number: ";
+    cin >> N;
+
+    int result = countMagicalNumbers(N);
+    cout << "Count of magical numbers from 1 to " << N << " is: " << result << endl;
+
+    return 0;
+}
