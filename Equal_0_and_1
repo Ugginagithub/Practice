@@ -1,0 +1,45 @@
+Question 7. Given an array of length n, find the length of largest subarray which contains equal number of 0s and 1s
+Input 1-> 1 0 1 1 1 0 0
+Output 1-> 6
+Input 2: 0 0 1 1 0
+Output: 4
+
+
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+using namespace std;
+
+int findMaxLength(vector<int>& nums) {
+    unordered_map<int, int> hashMap;
+    int maxLength = 0;
+    int cumulativeSum = 0;
+
+    for (int i = 0; i < nums.size(); ++i) {
+        // Convert 0s to -1s
+        cumulativeSum += (nums[i] == 0) ? -1 : 1;
+
+        // If the cumulative sum is 0, it means we have a valid subarray from index 0 to i
+        if (cumulativeSum == 0) {
+            maxLength = i + 1;
+        }
+
+        // If this cumulative sum has been seen before
+        if (hashMap.find(cumulativeSum) != hashMap.end()) {
+            // Update the maximum length
+            maxLength = max(maxLength, i - hashMap[cumulativeSum]);
+        } else {
+            // Store the first occurrence of this cumulative sum
+            hashMap[cumulativeSum] = i;
+        }
+    }
+
+    return maxLength;
+}
+
+int main() {
+    vector<int> nums = {0, 1, 0, 1, 1, 0, 0, 1};
+    cout << "Length of the largest subarray with equal number of 0s and 1s: " << findMaxLength(nums) << endl;
+
+    return 0;
+}
