@@ -1,0 +1,65 @@
+Refueling Vehicle :
+You are incharge of a convoy of N vehicles, each with fuel meter which shows the fuel present in each vehicle in litres. Each vehicles need to travel a distance of X kilometers. If the fuel becomes empty before reaching X kilometers the vehicle can refuel but the refueling will be of X litres and if the vehicles completes the X kilometers where fuel is left over then the extra fuel will be given to the next vehicle in the convoy. You must rearrange the convoy such that the vehicles take minimum refueling stops.
+Your task is to find and return an integer value representing the
+minimum number of refueling stops required by the convoy of vehicles.
+Note:
+The vehicles can go 1 kilometer in a single litre
+The refueling at any point of time will be for X litres only
+Input Specification:
+input1: An integer value X, representing the distance to be travelled. input2: An integer value N, representing the number of vehicles in the convoy.
+input3: An integer array, representing the fuel capacity of vehicles in the convoy.
+Output Specification:
+2024
+4th May Repeated
+input1: 100
+input2:4
+input3: (80,120,90,70)
+Output: 1
+Explanation:
+vehicles is (80,120,90,70) and X y is 100. The refueling of the vehicles
+will happen as follows:
+First the vehicle with maximum fuel capacity of 120 will travel. It can
+reach without refueling.
+2. Now, we can carry over the remaining fuel of 20 (120-100) and add it
+to the capacity of the second vehicle, 90. So new capacity becomes
+110 (90+20). It can reach without refueling.
+3. Then, we can carry over the remaining fuel of 10 (110-100) and add
+it to the capacity of the third vehicle, 80. So its new capacity becomes
+90 (80+10). Now it requires 1 refueling (which is X=100) is required. So
+the capacity becomes 190 (90+100) and now this vehicle can also
+reach.
+4. Finally, we carry over the remaining fuel of 90 (190-100) and add it
+to the capacity of the fourth vehicle, 70. So its new capacity becomes
+160 (70+90), so it can reach without refueling.
+The convoy of vehicles requires 1 refueling. Therefore, 1 is returned as
+the output.
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    int x,n;
+    cin>>x>>n;
+    vector<int> v(n);
+
+    for(int i=0;i<n;i++){
+        cin>>v[i];
+    }
+
+    sort(v.begin(),v.end());
+    reverse(v.begin(),v.end());
+    int refill=0;
+    int remain=0;
+    int curfuel;
+    for(int i=0;i<v.size();i++){
+        curfuel=v[i]+remain;
+
+        if(curfuel<x){
+            refill++;
+            curfuel+=x;
+        }
+        remain=curfuel-x;
+    }
+    cout<<refill;
+}
